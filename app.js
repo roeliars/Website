@@ -10,7 +10,7 @@ npm i mobile-locator
 npm i sqlite3
 node app.js
 */
-
+//OODMOAKD
 /*
 Paso 2. Editar archivo app.js
 */
