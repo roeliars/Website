@@ -11,8 +11,6 @@ npm i sqlite3
 node app.js
 */
 
-//holas 
-
 /*
 Paso 2. Editar archivo app.js
 */
