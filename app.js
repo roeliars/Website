@@ -92,14 +92,51 @@ app.post("/signupAction", urlencodedParser, (req, res) => {
             res.status(400).json({"error": err.message})
             return;
         }
-        res.json({
-            "message" : "success",
-            // "data": data,
-            //"id" : this.lastID
-        })
+        res.sendFile(__dirname + '/htlms/login.html')
     });
 
 });
+
+app.post('/auth', function(request, response) {
+	// Capture the input fields
+	let user = request.body.user;
+	let password = request.body.password;
+	// Ensure the input fields exists and are not empty
+    var sql ='INSERT INTO identifier (user, password) VALUES (?,?)'
+    var params =[req.body.user, req.body.password]
+    db.run(sql, params, function (err, result) {
+        if (err){
+            res.status(400).json({"error": err.message})
+            return;
+        }
+        res.sendFile(__dirname + '/htlms/login.html')
+    });
+    
+
+
+	if (user && password) {
+		// Execute SQL query that'll select the account from the database based on the specified username and password
+		connection.query('SELECT * FROM identifier WHERE user = ? AND password = ?', [user, password], function(error, results, fields) {
+			// If there is an issue with the query, output the error
+			if (error) throw error;
+			// If the account exists
+			if (results.length > 0) {
+				// Authenticate the user
+				request.session.loggedin = true;
+				request.session.username = user;
+				// Redirect to home page
+				response.redirect('/home');
+			} else {
+				response.send('Incorrect User and/or Password!');
+			}			
+			response.end();
+		});
+	} else {
+		response.send('Please enter User and Password!');
+		response.end();
+	}
+});
+
 
 app.post("/loginAction", urlencodedParser, (req, res) => {
     /*
@@ -136,16 +173,19 @@ app.post("/loginAction", urlencodedParser, (req, res) => {
 
 });
 
+
 //la ip de nuestro server
 //en la del profe 192.168.8.111
 // localhost 127.0.0.1
 // 127.0.0.1:3030
-app.listen(3532, "127.0.0.1")
+app.listen(4321, "127.0.0.1")
 
 
+/*
 db.close((err)=>{ //Cerramos la base de datos
     if(err){
         console.error(err.message);
     }
     console.log('Database closed');
 })
+*/
