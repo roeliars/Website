@@ -11,10 +11,6 @@ npm i sqlite3
 node app.js
 */
 
-//Edit1
-
-//OODMOAKD
-
 /*
 Paso 2. Editar archivo app.js
 */
