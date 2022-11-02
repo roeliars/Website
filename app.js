@@ -5,24 +5,34 @@ cd ejemploForm
 npm init
 npm i body-parser
 npm i express
+npm i geoip-lite
+npm i mobile-locator
+npm i sqlite3
+node app.js
 */
 
 /*
 Paso 2. Editar archivo app.js
 */
 
-/*
-npm init
-npm i body-parser
-npm i express
-npm i sqlite3
-node app.js
-*/
-
 // Copiar chinook.db en el folder de mi app
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
+
+// Prueba de IP-Lookup:
+var geoip = require('geoip-lite')
+var ip = "142.251.34.196"
+var geo = geoip.lookup(ip);
+console.log(geo);
+
+//Con opencellid
+const api = require('mobile-locator');
+ 
+const locate = api('opencellid', { key:"pk.721180d52d419781eb156ca699098798" });
+ 
+locate({ mcc: 460, mnc: 0, lac: 4219, cid: 20925 })
+  .then(location => console.log(JSON.stringify(location, null, 2)));
 
 // sqlite3. OPEN_READONLY
 // sqlite3. OPEN_READWRITE
@@ -130,13 +140,12 @@ app.post("/loginAction", urlencodedParser, (req, res) => {
 //en la del profe 192.168.8.111
 // localhost 127.0.0.1
 // 127.0.0.1:3030
-app.listen(3540, "127.0.0.1")
+app.listen(3532, "127.0.0.1")
 
-/*
-db.close((err) => {
+
+db.close((err)=>{ //Cerramos la base de datos
     if(err){
         console.error(err.message);
     }
-    console.log('Database closed')
-});
-*/
+    console.log('Database closed');
+})
