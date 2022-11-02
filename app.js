@@ -11,6 +11,8 @@ npm i sqlite3
 node app.js
 */
 
+//holas 
+
 /*
 Paso 2. Editar archivo app.js
 */
@@ -111,7 +113,7 @@ app.post('/auth', function(request, response) {
         }
         res.sendFile(__dirname + '/htlms/login.html')
     });
-    
+
 
 
 	if (user && password) {
