@@ -67,24 +67,7 @@ app.post('/login', (req,res) => {
 app.post("/signupAction", urlencodedParser, (req, res) => {
     console.log('Body: ', req.body);
     console.log('Usuario', req.body.user);
-    /*
-    var errors=[]
-    if (!req.body.password){
-        errors.push("No password specified");
-    }
-    if (!req.body.user){
-        errors.push("No email specified");
-    }
-    if (errors.length){
-        res.status(400).json({"error":errors.join(",")});
-        return;
-    }
-    
-    var data = {
-        user: req.body.user, 
-        password : req.body.password
-    }
-    */
+
     var sql ='INSERT INTO identifier (user, password) VALUES (?,?)'
     var params =[req.body.user, req.body.password]
     db.run(sql, params, function (err, result) {
@@ -97,67 +80,35 @@ app.post("/signupAction", urlencodedParser, (req, res) => {
 
 });
 
-app.post('/auth', function(request, response) {
+
+app.post('/auth', urlencodedParser, function(request, response) {
 	// Capture the input fields
-	let user = request.body.user;
-	let password = request.body.password;
 	// Ensure the input fields exists and are not empty
-    var sql ='INSERT INTO identifier (user, password) VALUES (?,?)'
-    var params =[req.body.user, req.body.password]
-    db.run(sql, params, function (err, result) {
-        if (err){
-            res.status(400).json({"error": err.message})
-            return;
-        }
-        res.sendFile(__dirname + '/htlms/login.html')
-    });
-
-
-
-	if (user && password) {
 		// Execute SQL query that'll select the account from the database based on the specified username and password
-		connection.query('SELECT * FROM identifier WHERE user = ? AND password = ?', [user, password], function(error, results, fields) {
-			// If there is an issue with the query, output the error
-			if (error) throw error;
-			// If the account exists
-			if (results.length > 0) {
-				// Authenticate the user
-				request.session.loggedin = true;
-				request.session.username = user;
+        var sql ='SELECT * FROM identifier WHERE user = ? AND password = ?'
+        var params =[request.body.user, request.body.password]
+        db.run(sql, params, function(err, result) {
+        // If there is an issue with the query, output the error
+            if (err){
+                response.status(400).json({"error": err.message})
+                return;
+            }
+            console.log(('Result: ', request.result))
+            /*
+			if (results) {
 				// Redirect to home page
-				response.redirect('/home');
-			} else {
-				response.send('Incorrect User and/or Password!');
-			}			
-			response.end();
+				response.sendFile(__dirname + '/htlms/signup.html')
+			} 	
+            */	
 		});
-	} else {
-		response.send('Please enter User and Password!');
-		response.end();
-	}
 });
 
 
+
+/*
 app.post("/loginAction", urlencodedParser, (req, res) => {
-    /*
-    var errors=[]
-    if (!req.body.password){
-        errors.push("No password specified");
-    }
-    if (!req.body.user){
-        errors.push("No email specified");
-    }
-    if (errors.length){
-        res.status(400).json({"error":errors.join(",")});
-        return;
-    }
-    
-    var data = {
-        user: req.body.user, 
-        password : req.body.password
-    }
-    */
-    var sql ='SELECT * FROM identifier WHERE INTO identifier (user, password) VALUES (?,?)'
+
+    var sql ='SELECT * FROM identifier WHERE user = ? AND password = ?'
     var params =[req.body.user, req.body.password]
     db.run(sql, params, function (err, result) {
         if (err){
@@ -172,7 +123,7 @@ app.post("/loginAction", urlencodedParser, (req, res) => {
     });
 
 });
-
+*/
 
 //la ip de nuestro server
 //en la del profe 192.168.8.111
