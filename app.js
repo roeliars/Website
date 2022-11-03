@@ -50,7 +50,7 @@ let db = new sqlite3.Database('./sqlite.db',sqlite3. OPEN_READWRITE ,(err) => {
 
 // Multiples puntos de acceso a mi sitio despues de la /
 app.get('/', (req,res) => {
-    res.sendFile(__dirname + '/htlms/index.html')
+    res.sendFile(__dirname + '/htlms/login.html')
 });
 
 app.post('/signup', (req,res) => {
@@ -59,6 +59,10 @@ app.post('/signup', (req,res) => {
 
 app.post('/login', (req,res) => {
     res.sendFile(__dirname + '/htlms/login.html')
+});
+
+app.post('/main', (req,res) => {
+    res.sendFile(__dirname + '/htlms/main.html')
 });
 
 
@@ -94,16 +98,10 @@ app.post('/auth', urlencodedParser, function(req, res) {
                 res.status(400).json({"error": err.message})
                 return;
             }
-            //res.json({
-            //    "message":"success",
-            //    "data":rows
-            //})
-            //console.log('Rows', JSON.stringify(rows))
-            console.log(JSON.stringify(rows).length)
 
 			if (JSON.stringify(rows).length > 2) {
 				// Redirect to home page
-				res.sendFile(__dirname + '/htlms/signup.html')
+				res.sendFile(__dirname + '/htlms/main.html')
 			} 	else {
                 res.sendFile(__dirname + '/htlms/login.html')
                 console.log("error")
@@ -136,9 +134,10 @@ app.post("/loginAction", urlencodedParser, (req, res) => {
 
 //la ip de nuestro server
 //en la del profe 192.168.8.111
+//en mi casa BMS 192.168.15.59
 // localhost 127.0.0.1
 // 127.0.0.1:3030
-app.listen(4321, "127.0.0.1")
+app.listen(4321, "192.168.15.59")
 
 
 /*
