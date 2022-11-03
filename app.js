@@ -34,6 +34,7 @@ const locate = api('opencellid', { key:"pk.721180d52d419781eb156ca699098798" });
 locate({ mcc: 460, mnc: 0, lac: 4219, cid: 20925 })
   .then(location => console.log(JSON.stringify(location, null, 2)));
 
+
 // sqlite3. OPEN_READONLY
 // sqlite3. OPEN_READWRITE
 // sqlite3. OPEN_CREATE
@@ -81,25 +82,33 @@ app.post("/signupAction", urlencodedParser, (req, res) => {
 });
 
 
-app.post('/auth', urlencodedParser, function(request, response) {
+app.post('/auth', urlencodedParser, function(req, res) {
 	// Capture the input fields
 	// Ensure the input fields exists and are not empty
 		// Execute SQL query that'll select the account from the database based on the specified username and password
         var sql ='SELECT * FROM identifier WHERE user = ? AND password = ?'
-        var params =[request.body.user, request.body.password]
-        db.run(sql, params, function(err, result) {
+        var params =[req.body.user, req.body.password]
+        db.all(sql, params, function(err, rows) {
         // If there is an issue with the query, output the error
             if (err){
-                response.status(400).json({"error": err.message})
+                res.status(400).json({"error": err.message})
                 return;
             }
-            console.log(('Result: ', request.result))
-            /*
-			if (results) {
+            //res.json({
+            //    "message":"success",
+            //    "data":rows
+            //})
+            //console.log('Rows', JSON.stringify(rows))
+            console.log(JSON.stringify(rows).length)
+
+			if (JSON.stringify(rows).length > 2) {
 				// Redirect to home page
-				response.sendFile(__dirname + '/htlms/signup.html')
-			} 	
-            */	
+				res.sendFile(__dirname + '/htlms/signup.html')
+			} 	else {
+                res.sendFile(__dirname + '/htlms/login.html')
+                console.log("error")
+            }
+
 		});
 });
 
