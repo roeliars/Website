@@ -135,7 +135,9 @@ app.post("/loginAction", urlencodedParser, (req, res) => {
 //en mi casa BMS 192.168.15.59
 // localhost 127.0.0.1
 // 127.0.0.1:3030
-app.listen(4321, "127.0.0.1")
+
+//app.set('port', process.env.PORT || 5000)
+app.listen(process.env.PORT || 3000);
 
 
 /*
