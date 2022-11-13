@@ -50,7 +50,7 @@ let db = new sqlite3.Database('./sqlite.db',sqlite3. OPEN_READWRITE ,(err) => {
 
 // Multiples puntos de acceso a mi sitio despues de la /
 app.get('/', (req,res) => {
-    res.sendFile(__dirname + '/htlms/login.html')
+    res.sendFile(__dirname + '/htlms/index.html')
 });
 
 app.post('/signup', (req,res) => {
@@ -58,13 +58,12 @@ app.post('/signup', (req,res) => {
 });
 
 app.post('/login', (req,res) => {
-    res.sendFile(__dirname + '/htlms/login.html')
+    res.sendFile(__dirname + '/htlms/index.html')
 });
 
 app.post('/main', (req,res) => {
     res.sendFile(__dirname + '/htlms/main.html')
 });
-
 
 //post / register
 // solo el open va afuera
@@ -80,7 +79,7 @@ app.post("/signupAction", urlencodedParser, (req, res) => {
             res.status(400).json({"error": err.message})
             return;
         }
-        res.sendFile(__dirname + '/htlms/login.html')
+        res.sendFile(__dirname + '/htlms/index.html')
     });
 
 });
@@ -103,13 +102,12 @@ app.post('/auth', urlencodedParser, function(req, res) {
 				// Redirect to home page
 				res.sendFile(__dirname + '/htlms/main.html')
 			} 	else {
-                res.sendFile(__dirname + '/htlms/login.html')
+                res.sendFile(__dirname + '/htlms/index.html')
                 console.log("error")
             }
 
 		});
 });
-
 
 
 /*
@@ -137,7 +135,7 @@ app.post("/loginAction", urlencodedParser, (req, res) => {
 //en mi casa BMS 192.168.15.59
 // localhost 127.0.0.1
 // 127.0.0.1:3030
-app.listen(4321, "192.168.15.59")
+app.listen(4321, "127.0.0.1")
 
 
 /*
